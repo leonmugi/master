@@ -1,0 +1,6 @@
+[
+  {"id":1,"name":"Bulma","power":12,"meta":{"role":"engineer"}},
+  {"id":2,"name":"Gohan","power":9001},
+  {"id":3,"name":"Piccolo","power":8500,"tags":["namek","mentor"]}
+]
+
