@@ -98,3 +98,5 @@ It includes JavaDoc documentation and JUnit 5 tests to ensure code quality.
 Since this is my first time programming in IntelliJ and Java, the project is very basic.  
 In the future, I would like to add a graphical interface where the user can select the JSON file and directly visualize the generated CSV without having to search for it manually.  
 There are also many other opportunities to improve the tool and make it more user-friendly and versatile.
+
+Finally i want to say that was a good progress for my and i am happy, i'll hope be better in the near future.
