@@ -1,102 +1,96 @@
-# JSON → CSV Transformer
+# JSON to CSV Tool
 
-This project is a **Java 17** application that can **read JSON files** and convert them into **CSV files**.  
-It was implemented as a **command-line interface (CLI)** tool, receiving the input file, the output file, and optionally the delimiter as arguments.
-
----
-
-## 📚 Libraries Used
-
-- **Jackson (com.fasterxml.jackson.databind)**  
-  Used to parse JSON files into Java structures (`Map<String,Object>` or `List<Map<...>>`).  
-  It provides flexibility to handle both JSON objects and arrays.
-
-- **OpenCSV (com.opencsv)**  
-  Used to write CSV files.  
-  It simplifies handling delimiters, quotes, and escaping without reinventing the wheel.
-
-- **JUnit 5 (org.junit.jupiter)**  
-  Used for unit testing, ensuring that JSON reading and CSV writing work correctly and that errors are properly handled.
+Este proyecto es una aplicación en **Java 17** que permite **leer archivos JSON** y convertirlos en **archivos CSV** de manera flexible.  
+Fue desarrollado como parte del **Sprint 3** del curso y se enfoca en consolidar funcionalidades, documentación y pruebas.
 
 ---
 
-## 🛠️ Code Structure
+## 🚀 Funcionalidades principales
 
-- **`JsonReader.java`**  
-  Utility class to read JSON files:
-    - Detects if the file contains an object or an array.
-    - Always returns a list of maps (`List<Map<String,Object>>`).
-    - Handles exceptions when the format is invalid.
+1. **Lectura de JSON**  
+   - Se desarrolló la clase `JsonReader` que utiliza **Jackson** para interpretar archivos JSON.  
+   - Soporta tanto objetos como arreglos JSON.  
 
-- **`CsvWriterUtil.java`**  
-  Utility class to write CSV files from a list of maps:
-    - Automatically generates headers from all keys found.
-    - Nested structures (objects/lists) are serialized as JSON strings inside a cell.
-    - Allows choosing the delimiter (default `,`, also supports `;`).
+2. **Transformación de datos**  
+   - Los datos del JSON se mapean en una estructura interna (`List<Map<String,Object>>`) que permite un manejo flexible.  
 
-- **`Main.java`**  
-  Entry point for the CLI version:
-    - Requires 2 or 3 arguments: input JSON, output CSV, and optionally the delimiter.
-    - Displays a usage message if arguments are missing.
-    - Useful for automation or direct execution from the terminal.
+3. **Escritura de CSV**  
+   - La clase `CsvWriterUtil` implementa la escritura en CSV usando **OpenCSV**.  
+   - Maneja delimitadores configurables (ejemplo: `,` o `;`).  
+   - Valores anidados (`List` o `Map`) se serializan como JSON dentro de una celda.  
 
----
+4. **Configuración de parámetros**  
+   - El programa recibe argumentos desde la línea de comandos:  
+     ```bash
+     java -jar json-csv-tool.jar input.json output.csv ;
+     ```
+     - `args[0]`: Ruta del archivo JSON de entrada  
+     - `args[1]`: Ruta del archivo CSV de salida  
+     - `args[2]`: (opcional) delimitador, por defecto `,`
 
-## ⚙️ How It Works
-
-1. **JSON Reading:**  
-   The program reads the `.json` file, parses it into Java structures, and validates the format.
-
-2. **Data Processing:**  
-   Iterates over all maps and collects all unique keys to build the CSV headers.
-
-3. **CSV Writing:**  
-   Creates a `.csv` file where each row corresponds to one JSON object.
-    - Simple values (numbers, strings) are written directly.
-    - Complex values (lists, nested objects) are stored as JSON strings.
-
-`input.json` → path to the JSON file
-
-`output.csv` → path for the generated CSV file
+5. **Algoritmo de transformación**  
+   - Convierte cada objeto JSON en un mapa clave-valor.  
+   - Unifica cabeceras dinámicamente a partir de las llaves encontradas en los objetos.  
+   - Los valores complejos se serializan para no perder información.  
 
 ---
 
-## ✅ Quick Example
+## 📖 Documentación JavaDoc
 
-### Input (input.json)
-```json
+Se añadieron **comentarios JavaDoc detallados** para todas las clases y métodos principales.  
+- Se describen las responsabilidades de cada clase.  
+- Se documentan parámetros y valores de retorno.  
+- Se añadieron ejemplos explicativos en secciones clave.  
+
+Adicionalmente:  
+- Se instaló **Maven** y el plugin `maven-javadoc-plugin` para generar la documentación.  
+- Se corrigieron detalles de formato para mejorar la visualización del JavaDoc.  
+
+---
+
+## 🧪 Archivos de prueba
+
+Se incluyeron ejemplos adicionales de archivos JSON en la carpeta /test-data:
+
+1. products.json
 [
-  {"id":1,"name":"Carlos","power":12},
-  {"id":2,"name":"Samuel","power":9001}
+  { "id": 1, "name": "Laptop", "price": 1200.50, "inStock": true },
+  { "id": 2, "name": "Mouse", "price": 25.99, "inStock": false }
 ]
-```
 
-### Command in Windows PowerShell
-```powershell
-java -jar target/json-csv-tool-1.0.0-shaded.jar data\input.json data\output.csv ;
-```
+2. users.json
+[
+  { "id": 101, "username": "leonel", "email": "leon@example.com" },
+  { "id": 102, "username": "camila", "email": "camila@example.com" }
+]
 
-### Output (output.csv)
-```csv
-id,name,power
-1,Carlos,12
-2,Samuel,9001
-```
+3. orders.json
+[
+  { "orderId": 5001, "userId": 101, "total": 1300.75, "status": "paid" },
+  { "orderId": 5002, "userId": 102, "total": 25.99, "status": "pending" }
+]
 
----
+--------------------------------------------------
+✅ Checklist de verificación
 
-## 🔎 Summary
-The project demonstrates how to use external Java libraries (Jackson and OpenCSV) to handle common data formats.
+[✔] Lectura de archivos JSON con soporte para objetos y arreglos  
+[✔] Transformación de datos en estructura List<Map<String,Object>>  
+[✔] Escritura de CSV con delimitador configurable  
+[✔] Manejo de valores anidados con serialización a JSON  
+[✔] Recepción de parámetros por línea de comandos  
+[✔] Documentación JavaDoc completa y clara  
+[✔] Instalación y configuración de Maven para generación de Javadoc  
+[✔] Inclusión de archivos JSON de prueba  
+[✔] Actualización del repositorio en GitHub con los entregables del Sprint  
+--------------------------------------------------
+📌 Ejecución
 
-It was designed in a modular way: independent utility classes + a CLI entry point.
+Para compilar y generar la documentación JavaDoc:
+mvn clean compile javadoc:javadoc
 
-It includes JavaDoc documentation and JUnit 5 tests to ensure code quality.
+Para ejecutar el programa:
+java -jar target/json-csv-tool-1.0.0.jar input.json output.csv ;
 
----
+--------------------------------------------------
 
-## 🌟 Future Projection
-Since this is my first time programming in IntelliJ and Java, the project is very basic.  
-In the future, I would like to add a graphical interface where the user can select the JSON file and directly visualize the generated CSV without having to search for it manually.  
-There are also many other opportunities to improve the tool and make it more user-friendly and versatile.
-
-Finally i want to say that was a good progress for my and i am happy, i'll hope be better in the near future.
+Desarrollado por Leonel Campos como parte de la práctica de Sprint 3.
